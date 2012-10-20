@@ -2,12 +2,20 @@
 
 /******************Header files****************/
 
-#include<fstream.h>
-#include<conio.h>
-#include<process.h>
+#include<iostream>
+#include<fstream>
+#include <curses.h>
+#include <stdlib.h>
+
+
+// #include<conio.h>
+// #include<process>
 #include<stdio.h>
 #include<string.h>
-#include<dos.h>
+// #include<dos.h>
+#include<time.h>
+
+using namespace std;
 
 /*********Declaration of prototype of functions*******************/
 
@@ -39,7 +47,7 @@ class  baseasset
 
 void baseasset::getbasicdata()  // ENTERING THE DETAILS
 {
-      clrscr();
+      clear();
       cout<<"\tADDITION";
       cout<<" \n ENTER SERIAL NO : ";
       gets(slno);
@@ -82,7 +90,7 @@ class  asset:public baseasset
  
 void asset::getdata()  // ENTERING THE DETAILS
 {
-      clrscr();
+      clear();
       getbasicdata();
       cout<<" \n ENTER COMPUTER CODE : ";
       cin>>code;
@@ -102,7 +110,7 @@ void asset::display() //TO DISPLAY ALL THE RECORDS
 {
 
      displaybasicdata();
-     cout<<"\n\nCODE"<<"\tRAM"<<"\tHARD DISK"<<"\tOPERATING      SYSTEM"<<"\tPROCESSOR”;
+     cout << "\n\nCODE"<<"\tRAM"<<"\tHARD DISK"<<"\tOPERATING      SYSTEM"<<"\tPROCESSOR";
     cout<<"\n\n"<<code;
     cout<<"\t"<<ram;
     cout<<"\t"<<hd;
@@ -155,7 +163,7 @@ void asset::edit()
  
 void welcome_screen()
 {
-	clrscr();
+	clear();
 	cout<<"\n\n\n\t\t**************** W E L C O M E *********************";
 	cout<<"\n\n\n\t\t*** V I M A L A P U B L I C S C H O O L **** " ;
 	cout<<"\n\n\n\n\t\t A S S E T  M A N A G E M E N T   S Y S T E M	  ";
@@ -170,7 +178,7 @@ void displayall()
      ifstream fin;
      int n,j;
      fin.open("c:\\ams.dat");
-     clrscr();
+     clear();
      n=recordcount();
      for(j=0;j<n;j++)
      {
@@ -201,7 +209,7 @@ void search()  //SEARCHING FOR A PARTICULAR NUMBER
              cout<<" \n FILE NOT FOUND ";
 	 getch();
      }
-     clrscr();
+     clear();
      cout<<"\t\t\t [SEARCHING] ";
      cout<<" \n ENTER THE COMPUTER CODE TO BE SEARCHED : ";
      int c;
@@ -243,7 +251,7 @@ char check(char *s)
 
 void modification(char option)
 {
-    clrscr();
+    clear();
     int c,n,i;
     fstream fin;
     ofstream fout;
@@ -336,14 +344,13 @@ void checkstatus(char *b)
      getch();
 }
 
-void asset::warrantyexpired()
-  {
-       struct date d;
-       getdate(&d);
+void asset::warrantyexpired() {
+       time_t t = time(NULL);
+       struct tm d = *localtime(&t);
        int m,day,y,n;
-       day=d.da_day;
-       m=d.da_mon;
-       y=d.da_year;
+       day=d.tm_mday;
+       m=d.tm_mon;
+       y=d.tm_year;
        ifstream fin;
        fin.open("c:\\ams.dat");
        n=recordcount();
@@ -373,12 +380,12 @@ void asset::warrantyexpired()
 
 void asset::warrantynearing()
   {
-       struct date d;
-       getdate(&d);
+       time_t t = time(NULL);
+       struct tm d = *localtime(&t);
        int m,day,y,n;
-       day=d.da_day;
-       m=d.da_mon;
-       y=d.da_year;
+       day=d.tm_mday;
+       m=d.tm_mon;
+       y=d.tm_year;
        ifstream fin;
        fin.open("c:\\ams.dat");
        n=recordcount();
@@ -419,7 +426,7 @@ void submenu()
 	  ch=getch();
 	  switch(ch)
 	  {
-	      case '1'        :clrscr();
+	      case '1'        :clear();
 			   cout<<"\t\t Operating system  menu";
 			   cout<<" \n\n\t1. windows xp professional ";
 			   cout<<"\n\t2. windows 98";
@@ -429,16 +436,16 @@ void submenu()
 			   cha=getch();
 			   switch(cha)
 			   {
-			        case '1'     : clrscr();
+			        case '1'     : clear();
 					       sortos("windows xp");
 					       break;
-			        case  '2'    : clrscr();
+			        case  '2'    : clear();
 			 		       sortos("windows 98");
 					       break;
-			        case  '3'     :clrscr();
+			        case  '3'     :clear();
 					       sortos("windows 2000");
 					       break;
-			        case '4'     : clrscr();
+			        case '4'     : clear();
 					       submenu();
 					       break;
 
@@ -446,7 +453,7 @@ void submenu()
 			    break;
 
 
-	         case '2'       :clrscr();
+	         case '2'       :clear();
 			       cout<<"\n\n\t\t STATUS MENU";
 			       char x;
 			       cout<<"\n\n\t\t1. list of working computers";
@@ -455,28 +462,28 @@ void submenu()
 			       x=getch();
 			       switch(x)
 			       {
-			          case '1'  : clrscr();
+			          case '1'  : clear();
 					     checkstatus("working");
 					     break;
-                                              case '2'   : clrscr();
+                                              case '2'   : clear();
 					     checkstatus("not working");
 					     break;
-			         case '3'   : clrscr();
+			         case '3'   : clear();
 					     submenu();
 					     break;
 			    }
 			    break;
-	   case '3'    : clrscr();
+	   case '3'    : clear();
 			    cout<<"\n\n\t\tWARRANTY EXPIRED COMPUTERS";
 			    obj.warrantyexpired();
 			    getch();
 			    break;
-	   case '4'    : clrscr();
+	   case '4'    : clear();
 			    cout<<"\n\n\t\t COMPUTERS NEARING EXPIRY";
 			    obj.warrantynearing();
 			    getch();
 			    break;
-	   case '5'    : clrscr();
+	   case '5'    : clear();
 			    menu();
 			    break;
 		    }
@@ -487,7 +494,7 @@ void menu()
        char ch;
        do
         {
-            clrscr();
+            clear();
             cout<<"\n\n\t\t***MENU****";
             cout<<"\n\n\t\t 1:  ADD NEW ASSET";
             cout<<"\n\n\t\t 2:  DELETE AN ASSET    ";
@@ -507,7 +514,7 @@ void menu()
 		                        break;
 	      case '4':     displayall();
 			            break;
-	      case '5':     clrscr();
+	      case '5':     clear();
 			submenu();
 			       break;
 	      case '6': search();
@@ -516,9 +523,12 @@ void menu()
        }while (ch != '7');
  }
 
-void main()
+int main()
 {
-    clrscr();
-    welcome_screen();
-    menu();
+   initscr();
+   // clear();
+   welcome_screen();
+   menu();
+   endwin();
+   return 0;
 }
